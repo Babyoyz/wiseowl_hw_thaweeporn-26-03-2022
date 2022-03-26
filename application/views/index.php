@@ -1,59 +1,11 @@
-<style>
+<link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
 
-</style>
 
 <body>
     <main id="app" class="main center">
 
         <v-container data-app>
-            <!-- <div class="d-btn-export mb-2">
-                        <button>
-                            <b>Export CSV</b>
-                        </button>
-                    </vue-json-to-csv>
-                </div> -->
-            <!-- <div>
-                <v-row class="d-btn-export mb-2">
-                    <v-dialog v-model="dialog" persistent max-width="600px">
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-btn color="primary" dark v-bind="attrs" v-on="on">
-                            Export CSV
-                            </v-btn>
-                        </template>
-                        <v-card>
-                            <v-card-title>
-                                <span class="text-h5">Export CSV</span>
-                            </v-card-title>
-                            <v-card-text>
-                                <v-container>
-                                    <v-row>
-                                        <v-col cols="12" sm="6">
-                                        <v-select placeholder="กรุณาเลือกข้อมูล"
-                                            item-text="FristName"
-                                            item-value="CreateBy"
-                                            v-model="resultexport"
-                                            :items="defaultSelected"
-                                            >
-                                       
-                                        </v-col>
-                                    </v-row>
-                                </v-container>
-                                <small>*indicates required field</small>
-                            </v-card-text>
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn color="blue darken-1" text @click="dialog = false">
-                                    Close
-                                </v-btn>
-                                <v-btn color="blue darken-1" text @click="dialog = false">
-                                    Save
-                                </v-btn>
-                            </v-card-actions>
-                        </v-card>
-                    </v-dialog>
-                </v-row>
-            </div> -->
-
+    
             <v-card>
                 <v-card-title>
                     หน้าแสดงรายการข้อมูลการยืม คืน หรือส่งซ่อมอุปกรณ์ทั้งหมด
@@ -61,7 +13,8 @@
                     <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details>
                     </v-text-field>
                 </v-card-title>
-                <v-data-table :headers="headers" :items="item" :search="search">
+                <v-data-table :headers="headers" :items="item" :search="search" loading
+                    loading-text="กำลังโหลดข้อมูล">
                     <template v-slot:item.status="{ item }">
                         <v-chip :color="getColor(item.status)" dark v-if="item.status == 1"
                             class="d-flex justify-center">
@@ -143,7 +96,7 @@ new Vue({
         async calldata() {
             const {
                 data
-            } = await axios.get("<?php echo base_url();?>index.php/ApiController/", {})
+            } = await axios.get("<?php echo base_url();?>/ApiController/", {})
 
             this.item = data    
             console.log(data)

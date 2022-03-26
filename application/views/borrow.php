@@ -1,115 +1,190 @@
-<style>
-
-</style>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<link rel="stylesheet" href="https://unpkg.com/vue-select@latest/dist/vue-select.css">
 
 <body>
     <main id="app" class="main center">
 
-        <v-container data-app>
+       <div class="container">
+        <div class="header-content">
+            <p>insert information</p>
+        </div>
 
-            <v-card>
-                <v-card-title>
-                        หน้าสำ หรับบันทึกข้อมูลการยืม คืน หรือส่งซ่อมอุปกรณ์
-                    <v-spacer></v-spacer>
-                    
-                </v-card-title>
-                <div>
-                    
-
+        <div class="row">
+           <div class="col-md-6">
+                <div class="mb-3 row">
+                    <label for="inputPassword" class="col-sm-4 col-form-label">ผู้ยืม</label>
+                    <div class="col-sm-8">
+                    <v-select :options="options" v-model="result" label="FristName"></v-select>
+                    </div>
                 </div>
-            </v-card>
-        </v-container>
+
+           </div>
+           <div class="col-md-6">
+           <div class="mb-3 row">
+                    <label for="inputPassword" class="col-sm-4 col-form-label">ฝ่าย</label>
+                    <div class="col-sm-8">
+                    <input type="text" class="form-control" v-model="Positionshow" Readonly>
+                    </div>
+                </div>
+           </div>
+           <div class="col-md-6">
+           <div class="mb-3 row">
+                    <label for="inputPassword" class="col-sm-4 col-form-label">อุปกรณ์ที่ยืม</label>
+                    <div class="col-sm-8">
+                        <v-select :options="equipment" v-model="equipmentshow"  label="Namehardware"></v-select>
+                    </div>
+                </div>
+           </div>
+           <div class="col-md-6">
+           <div class="mb-3 row">
+                    <label for="inputPassword" class="col-sm-4 col-form-label">ยี่ห้อ</label>
+                    <div class="col-sm-8">
+                    <input type="text" class="form-control" v-model="band" Readonly>
+                    </div>
+                </div>
+           </div>
+           <div class="col-md-6">
+           <div class="mb-3 row">
+                    <label for="inputPassword" class="col-sm-4 col-form-label">ประเภทอุปกรณ์ที่ยืม</label>
+                    <div class="col-sm-8">
+                    <input type="text" class="form-control" v-model="equipmenttype" Readonly>
+                    </div>
+                </div>
+           </div>
+           <div class="col-md-6">
+           <div class="mb-3 row">
+                    <label for="inputPassword" class="col-sm-4 col-form-label">สถานะการยืม</label>
+                    <div class="col-sm-8">
+                    <select class="form-select" aria-label="Default select example" v-model="statusselect">
+                        <option selected>กรุณาเลือก</option>
+                        <option value="1">ยืม</option>
+                        <option value="2">คืน</option>
+                        <option value="3">ส่งซ่อม</option>
+                        </select>
+                    </div>
+                </div>
+           </div>
+        </div>
+        <button @click="submitdata">submit</button>
+        <!-- Button trigger modal -->
+        <a class="btn btn-primary" data-bs-toggle="modal" href="#exampleModalToggle" role="button">Open first modal</a>
 
 
+<!-- Modal -->
+<div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1"  data-bs-backdrop="static" >
+  <div class="modal-dialog  modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalToggleLabel">Modal 1</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6">
+            <div class="mb-3 row">
+                        <label for="inputPassword" class="col-sm-4 col-form-label">ชื่ออุปกรณ์</label>
+                        <div class="col-sm-8">
+                        <input type="text" class="form-control" v-model="nameheadware">
+                        </div>
+                    </div>
+            </div>
+            <div class="col-md-6">
+           <div class="mb-3 row">
+                    <label for="inputPassword" class="col-sm-4 col-form-label">สถานะการยืม</label>
+                    <div class="col-sm-8">
+                    <select class="form-select" aria-label="Default select example" v-model="selecthardwaretype">
+                        <option selected>กรุณาเลือก</option>
+                        <option value="อุปกรณ์คอมพิวเตอร์">อุปกรณ์คอมพิวเตอร์</option>
+                        <option value="2">อื่นๆ</option>
+                        </select>
+                    </div>
+                </div>
+           </div>
+          </div>
+  
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal">Open second modal</button>
+      </div>
+    </div>
+  </div>
+</div>
 
+
+       </div>
     </main>
+
 </body>
-<script src="https://cdn.jsdelivr.net/npm/vue-json-to-csv"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
 <script src="<?php echo base_url();?>assets/js/axios.min.js"></script>
-<script src="<?php echo base_url();?>node_modules/vue-json-to-csv/dist/vue-json-to-csv.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
-<script type="text/javascript">
-Vue.use(VueJsonToCsv);
-</script>
+<script src="https://unpkg.com/vue-select@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 <script>
-
+Vue.component('v-select', VueSelect.VueSelect);
 new Vue({
     el: '#app',
-    vuetify: new Vuetify(),
-    data() {
-        return {
-            search: '',
-            dialog: false,
-            resultexport:{
-                CreateBy: "John",
-                FristName: "Doe"
-            },
-            defaultSelected: [],
-            headers: [{
-                    text: 'Dessert (100g serving)',
-                    align: 'start',
-                    sortable: false,
-                    value: 'name',
-                },
-                {
-                    text: 'ผู้ยืม',
-                    value: 'borrowerName'
-                },
-                {
-                    text: 'Fat (g)',
-                    value: 'borrowerName'
-                },
-                {
-                    text: 'Carbs (g)',
-                    value: 'Namehardware'
-                },
-                {
-                    text: 'Protein (g)',
-                    value: 'Position'
-                },
-                {
-                    text: 'Iron (%)',
-                    value: 'borrowerPosition'
-                },
-                {
-                    text: 'typeactivities',
-                    value: 'typeactivities',
-                    align: 'center',
-                },
-
-            ],
-            item: [],
-            My_CSV: "testting"
-        }
-    },
-    created() {
+   data(){
+       return{
+        options: [
      
-    },
-    methods: {
-        async calldata() {
-            const {
-                data
-            } = await axios.get("<?php echo base_url();?>index.php/ApiController/", {})
+    ],
+    result:'',
+    Positionshow:'',
+    statusselect:'',
+    equipment:[],
+    equipmenttype:'',
+    equipmentshow:'',
+    band:'',
+    nameheadware:'',
+    selecthardwaretype:''
+    }
+   },
+   created() {
+       this.calldata_employee()
+       this.callget_employee()
+   },
+   updated() {
 
-            this.item = data
-            // console.log(data)
-            
-            this.defaultSelected = this.item
-            console.log(this.item)
-            console.log(this.defaultSelected)
-            this.defaultSelected.push({
-                CreateBy:'All',
-                FristName:'ทั้งหมด',
-            })
-        },
-        getColor(typeactivities) {
-            if (typeactivities == 1) return 'orange'
-            else if (typeactivities == 2) return 'green'
-            else return 'red'
-        }
-    },
+       this.Positionshow = this.result  != null ? this.result.Position :''
 
+       this.equipmenttype = this.equipmentshow  != null ? this.equipmentshow.Type :''
+
+       this.band = this.equipmentshow  != null ? this.equipmentshow.brand :''
+
+   },
+   methods:{
+       async calldata_employee(){
+
+            const { data } = await axios.get("<?php echo base_url();?>/ApiController/getmemberdata")
+
+                this.options = data
+             console.log(this.options)
+
+       },
+       async callget_employee(){
+
+        const { data } = await axios.get("<?php echo base_url();?>/ApiController/getequipment")
+
+             this.equipment = data
+             
+             console.log(this.equipment)
+
+       },
+       async submitdata(){
+
+            let json = {
+                IDEMployee:this.result.ID,
+                equipment:this.equipment,
+                band:this.band,
+                equipmenttype:this.equipmenttype,
+                statusselect:this.statusselect,
+
+            }
+
+            console.log(json)
+       }
+   }
 
 })
 </script>

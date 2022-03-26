@@ -27,12 +27,15 @@ class ApiController extends CI_Controller {
             $product = json_decode($json);
     
             $data_r = [
-                "Name" => $product->Name,
-                "Typeof" => $product->Typeof,
-                "borrowerName" => $product->borrowerName,
+                "IDEMployee" => $product->IDEMployee,
+                "band" => $product->band,
+                "equipment" => $product->equipment,
+                "equipmenttype" => $product->equipmenttype,
+                "statusselect" => $product->statusselect,
+
             ];
     
-            // print_r(json_encode($data_r));
+        
     
             $this->load->model('Api_model');
     
@@ -50,6 +53,32 @@ class ApiController extends CI_Controller {
 
         }
        
+
+    }
+    public function getmemberdata(){
+
+        $this->load->model('Api_model');
+    
+        $this->load->database();
+
+        $result = $this->Api_model->select_member_data();
+
+        $this->db->close();
+
+       print_r(json_encode($result));
+
+    }
+    public function getequipment(){
+
+        $this->load->model('Api_model');
+    
+        $this->load->database();
+
+        $result = $this->Api_model->select_equipment();
+
+        $this->db->close();
+
+       print_r(json_encode($result));
 
     }
 }

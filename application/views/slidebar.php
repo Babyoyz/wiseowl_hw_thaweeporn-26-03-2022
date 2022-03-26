@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="<?php echo base_url();?>assets/css/style.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
 </head>
 <div class="header"></div>
         <input type="checkbox" class="openSidebarMenu" id="openSidebarMenu">
@@ -19,12 +18,10 @@
         </label>
         <div id="sidebarMenu">
             <ul class="sidebarMenuInner">
-            <li>Jelena Jovanovic <span>Web Developer</span></li>
-            <li><a href="https://vanila.io" target="_blank">Company</a></li>
-            <li><a href="https://instagram.com/plavookac" target="_blank">Instagram</a></li>
-            <li><a href="https://twitter.com/plavookac" target="_blank">Twitter</a></li>
-            <li><a href="https://www.youtube.com/channel/UCDfZM0IK6RBgud8HYGFXAJg" target="_blank">YouTube</a></li>
-            <li><a href="https://www.linkedin.com/in/plavookac/" target="_blank">Linkedin</a></li>
+            <li>Thaweeporn Areepun <span>Programmer</span></li>
+            <li><a href="<?php echo base_url ('Route/borrowequipment'); ?>">insertdata</a></li>
+            <li><a href="<?php echo base_url ('Route/index'); ?>">reportinformation</a></li>
+         
             </ul>
         </div>
    
