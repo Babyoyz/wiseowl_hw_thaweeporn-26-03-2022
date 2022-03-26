@@ -14,7 +14,7 @@ class ApiController extends CI_Controller {
 
         $this->db->close();
 
-       print_r(json_encode($result)) ;
+       print_r(json_encode($result));
 
 	}
 

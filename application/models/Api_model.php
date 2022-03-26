@@ -9,13 +9,22 @@ class Api_model extends CI_Model {
   
     public function get_hw_activities()
     {
-        
-           $this->db->select('*');
+           $this->db->select('a.ID AS hwc_ID,
+           a.hardwareID,
+           a.EmployeeID,
+           a.typeactivities AS status,
+           a.CreatedDate AS hwc_CreateDate,
+           b.Namehardware,
+           b.brand,
+           b.Type as Typehardware,
+           c.FristName,
+           c.LastName,
+           c.Position');
            $this->db->from('hw_activities a'); 
-           $this->db->join('hardwares b', 'b.ID=a.hardwareID', 'left');
-           $this->db->join('employees c', 'c.ID=a.CreateBy', 'left');   
-           $this->db->order_by('c.CreatedDate','DESC');         
-
+           $this->db->join('hardwares b', 'a.hardwareID = b.ID', 'left');
+           $this->db->join('employees c', 'a.EmployeeID = c.ID', 'left');   
+           $this->db->order_by('hwc_CreateDate','DESC');         
+           $this->db->distinct();
            $query = $this->db->get(); 
 
            if($query->num_rows() != 0)
@@ -27,7 +36,6 @@ class Api_model extends CI_Model {
                return false;
            }
 
-           
     }
 
     public function insert_hw_activitie($params){
