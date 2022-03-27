@@ -1,13 +1,16 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <link rel="stylesheet" href="https://unpkg.com/vue-select@latest/dist/vue-select.css">
-
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <body>
     <main id="app" class="main center">
 
        <div class="container">
         <div class="header-content">
-            <p>insert information</p>
+            <p>บันทึกการยืม</p>
+        </div>
+        <div class="d-flex justify-content-end mb-3">
+            <a class="btn btn-primary" data-bs-toggle="modal" href="#staticBackdrop" role="button">เพิ่มอุปกรณ์</a>
         </div>
 
         <div class="row">
@@ -78,18 +81,28 @@
         </div>
         <button @click="submitdata">submit</button>
     
-        <a class="btn btn-primary" data-bs-toggle="modal" href="#exampleModalToggle" role="button">Open first modal</a>
 
-
-<div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1"  data-bs-backdrop="static" >
-  <div class="modal-dialog  modal-xl">
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalToggleLabel">Modal 1</h5>
+        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-          <div class="row">
+
+      <div class="row">
+
+            <div class="col-md-6">
+            <div class="mb-3 row">
+                        <label for="inputPassword" class="col-sm-4 col-form-label">รหัสทรัพย์สิน</label>
+                        <div class="col-sm-8">
+                        <input type="text" class="form-control" v-model="refhwID">
+                        </div>
+                    </div>
+            </div>
+
             <div class="col-md-6">
             <div class="mb-3 row">
                         <label for="inputPassword" class="col-sm-4 col-form-label">ชื่ออุปกรณ์</label>
@@ -98,43 +111,50 @@
                         </div>
                     </div>
             </div>
-            <div class="col-md-6">
+        
+           <div class="col-md-6">
+            <div class="mb-3 row">
+                        <label for="inputPassword" class="col-sm-4 col-form-label">ยี่ห้ออุปกรณ์</label>
+                        <div class="col-sm-8">
+                        <input type="text" class="form-control" v-model="bandheadware">
+                        </div>
+                    </div>
+            </div>
+        
+          <div class="col-md-6">
            <div class="mb-3 row">
                     <label for="inputPassword" class="col-sm-4 col-form-label">ประเภทอุปกรณ์ที่ยืม</label>
-                    <div class="col-sm-8 d-flex">
+                    <div class="col-sm-8">
                     <select class="form-select" aria-label="Default select example" v-model="selecthardwaretype">
                         <option selected>กรุณาเลือก</option>
                         <option value="อุปกรณ์คอมพิวเตอร์">อุปกรณ์คอมพิวเตอร์</option>
                         <option value="2">อื่นๆ</option>
                         </select>
-                        <div class="mt-5" v-if="selecthardwaretype == 2">
-                        <input type="text"  class="form-control" placeholder="กรุณาระบุ">
-                        </div>
                     </div>
                 </div>
            </div>
-          
-           <div class="col-md-6">
+
+           
+           <div class="col-md-6" v-if="selecthardwaretype ==2 ">
             <div class="mb-3 row">
-                        <label for="inputPassword" class="col-sm-4 col-form-label">brand</label>
+                        <label for="inputPassword" class="col-sm-4 col-form-label">โปรดระบุ</label>
                         <div class="col-sm-8">
-                        <input type="text" class="form-control" v-model="nameheadware">
+                        <input type="text" class="form-control"  placeholder="โปรดระบุ" v-model="hardwaretype">
                         </div>
                     </div>
             </div>
+
           </div>
-  
       </div>
       <div class="modal-footer">
-        <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal">Open second modal</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+        <button type="button" class="btn btn-primary" @click="inserthardware">บันทึกข้อมูล</button>
       </div>
     </div>
   </div>
 </div>
-
-
-       </div>
-    </main>
+</div>
+</main>
 
 </body>
 <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
@@ -160,7 +180,11 @@ new Vue({
     band:'',
     nameheadware:'',
     selecthardwaretype:'',
-    HwID:''
+    hardwaretype:'',
+    HwID:'',
+    bandheadware:'',
+    refhwID:''
+
     }
    },
    created() {
@@ -187,17 +211,14 @@ new Vue({
             const { data } = await axios.get("<?php echo base_url();?>/ApiController/getmemberdata")
 
                 this.options = data
-             console.log(this.options)
-
+        
        },
        async callget_employee(){
 
         const { data } = await axios.get("<?php echo base_url();?>/ApiController/getequipment")
 
              this.equipment = data
-             
-             console.log(this.equipment)
-
+         
        },
        async submitdata(){
 
@@ -209,13 +230,114 @@ new Vue({
 
             }
 
-            const { data } = await axios.post("<?php echo base_url();?>/ApiController/call_insert_hw_activitie",{
-                ...json
-            })
+            if(this.result != ''){
+
+                if(this.band != ''){
+
+                    if(this.equipmentshow != ''){
+
+                        if(this.statusselect != ''){
+
+                            const { data } = await axios.post("<?php echo base_url();?>/ApiController/call_insert_hw_activitie",{
+                                        ...json
+                                    })
+
+                                    if(data.statusvalue == 100){
+
+                                        Swal.fire('ข้อความแจ้งเตือน','บันทึกข้อมูลสำเร็จ','success')
+
+                                        setTimeout(() => {
+                                            window.location.reload()
+                                        }, 800);
+
+                                    }else{
+                                        Swal.fire('ข้อความแจ้งเตือน',data.Des,'warning')
+                                    }
+
+                        }else{
+                           
+                            Swal.fire('ข้อความแจ้งเตือน','กรุณาระบุสถานะ', 'error')
+                        }
+                    }else{
+                     
+                        Swal.fire('ข้อความแจ้งเตือน','กรุณาเลือกอุปกรณ์ที่ต้องการยืม','warning')
+
+                    }
+                }else{
+                    Swal.fire('ข้อความแจ้งเตือน','กรุณาระบุชื่อผู้ยืม', 'error')
+
+                }
+            }else{
+                Swal.fire('ข้อความแจ้งเตือน','กรุณาระบุชื่อผู้ยืม', 'error')
+            }
+           
+       },
+       async inserthardware(){
+
+
+        let json = {
+            HwID:this.refhwID,
+            Namehardware:this.nameheadware,
+            brand:this.bandheadware,
+            Type:this.selecthardwaretype == 2 ? this.hardwaretype:this.selecthardwaretype,
+        }
+
+            if(this.refhwID != ''){
+                    
+                if(this.Namehardware != ''){
+
+                    if(this.brand != ''){
+                        
+                        if(this.selecthardwaretype != ''){
+
+                            if(this.selecthardwaretype == 2){
+                                   
+                                if(this.hardwaretype == ''){
+
+                                    Swal.fire('ข้อความแจ้งเตือน','ประเภทอุปกรณ์ที่ยืม', 'error')
+                                    return
+                                }
+                            }
+
+                            const { data } = await axios.post('<?php echo base_url();?>/ApiController/inserthardware',{
+                                  ...json
+                                })
+
+                                    if(data.statusvalue == 100){
+                                        Swal.fire('ข้อความแจ้งเตือน','บันทึกข้อมูลสำเร็จ','success')
+
+                                        setTimeout(() => {
+                                            window.location.reload()
+                                        }, 800);
+
+                                    }else{
+
+                                        Swal.fire('ข้อความแจ้งเตือน','รหัสทรัพย์สินซ้ำ', 'error')
+                                    }
+
+
+                        }else{
+                            Swal.fire('ข้อความแจ้งเตือน','ประเภทอุปกรณ์ที่ยืม', 'error')
+
+                        }
+                    }else{
+
+                        Swal.fire('ข้อความแจ้งเตือน','กรุณาระบุยี่ห้อ', 'error')
+                    }
+                }else{
+
+                    Swal.fire('ข้อความแจ้งเตือน','กรุณาระบุชื่ออุปกรณ์', 'error')
+                }
+
+            }else{
+
+                Swal.fire('ข้อความแจ้งเตือน','กรุณากรอกรหัสทรัพย์สิน', 'error')
+            }
 
 
 
-            console.log(data)
+
+        // window.location.href="http://localhost/wiseowl_hw_thaweeporn-26-03-2022/index.php/ApiController/exports_data"
        }
    }
 

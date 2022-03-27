@@ -78,6 +78,38 @@ class Api_model extends CI_Model {
              
     }
 
+    public function check_HWID($params){
+
+        $this->db->where('HwID =', $params); 
+        $query = $this->db->get('hardwares');
+        if($query->num_rows() != 0)
+        {
+            return $query->num_rows();
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    public function insert_hardware($params){
+
+        $HwID = $params['HwID'];
+        $Namehardware = $params['Namehardware'];
+        $Type = $params['Type'];
+        $brand = $params['brand'];
+        $CreateBy = "admin";
+
+                       $data = array(
+                            'HwID' => $HwID,
+                            'Namehardware' => $Namehardware,
+                            'Type' => $Type,
+                            'brand' => $brand,
+                            'CreateBy' => $CreateBy,
+                    );
+                    
+                    return  $this->db->insert('hardwares', $data);
+    }
 
     public function updatestatusHW($params){
 
@@ -130,6 +162,37 @@ class Api_model extends CI_Model {
 
 
     }
+
+    public function select_equipment_report(){
+
+        $this->db->select('a.ID,
+        a.HwID,
+        a.Namehardware,
+        a.Type AS TypeHardware,
+        a.brand,
+        a.CreatedDate,
+        a.UpDateDated,
+        a.UpDateDated,
+        a.borrowerID,
+        a.statushd,
+        b.FristName,
+        b.Position,
+        ');
+        $this->db->from('hardwares a'); 
+        $this->db->join('employees b', 'a.borrowerID = b.ID', 'left');      
+        $this->db->distinct();
+        $query = $this->db->get(); 
+
+        if($query->num_rows() != 0)
+        {
+            return $query->result_array();
+        }
+        else
+        {
+            return false;
+        }
+    }
+
 }
 
 ?>

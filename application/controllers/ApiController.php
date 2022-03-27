@@ -147,4 +147,102 @@ class ApiController extends CI_Controller {
        print_r(json_encode($result));
 
     }
+
+    public function inserthardware(){
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+       
+            $json = file_get_contents('php://input');
+
+            $product = json_decode($json);
+    
+            $data_r = [
+                "HwID" => $product->HwID,
+                "Namehardware" => $product->Namehardware,
+                "Type" => $product->Type,
+                "brand" => $product->brand,
+
+            ];
+
+                $this->load->model('Api_model');
+            
+                $this->load->database();
+
+                $checkHwID = $this->Api_model->check_HWID($product->HwID);
+
+               if($checkHwID == 0){
+
+                    $result = $this->Api_model->insert_hardware($data_r);
+
+                    $this->db->close();
+
+                  
+                    if($result == 1){
+
+                        $arr = [
+                            "statusCode" => 200,
+                            "statusvalue" => 100,
+                            "Des" => "บันทึกข้อมูลสำเร็จ"
+                        ];
+        
+                        echo json_encode( $arr );
+        
+                        return;
+                    }else{
+
+                        $arr = [
+                            "statusCode" => 500,
+                            "statusvalue" => -1,
+                            "Des" => "error insert data"
+                        ];
+        
+                        echo json_encode( $arr );
+        
+                        return;
+                    }
+
+               }else{
+
+                $this->db->close();
+                $arr = [
+                    "statusCode" => 200,
+                    "statusvalue" => -1,
+                    "Des" => "เลขรหัสทรัพย์สินซ้ำ"
+                ];
+
+                echo json_encode( $arr );
+
+                return;
+
+               }
+               
+        }else{
+
+            echo "no methods get";
+
+
+        }
+
+    }
+
+    public function exports_data(){
+
+        $this->load->helper('exportcsv');
+
+        $this->load->model('Api_model');
+    
+        $this->load->database();
+
+        $result = $this->Api_model->select_equipment_report();
+
+        $this->db->close();
+
+
+         echo exports_csv_hardware($result);
+
+        
+    }
+
+
 }
