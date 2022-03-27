@@ -136,7 +136,6 @@ axios.get("<?php echo base_url();?>/ApiController/call_getdatacart",{})
 
 .then(( {data} ) => {
 
-    console.log(data)
     let arraydata = []
     for(let i of data){
         arraydata.push(i.countdata)
