@@ -196,3 +196,28 @@ input:read-only {
     background-color: white !important;
     cursor: no-drop;
 }
+
+.v-chip {
+    align-items: center;
+    cursor: default;
+    display: inline-flex;
+    line-height: 20px;
+    max-width: 100%;
+    outline: none;
+    overflow: hidden;
+    padding: 0 12px;
+    position: relative;
+    text-decoration: none;
+    transition-duration: .28s;
+    transition-property: box-shadow, opacity;
+    transition-timing-function: cubic-bezier(.4, 0, .2, 1);
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.v-chip-custom {
+    border-radius: 16px;
+    font-size: 14px;
+    height: 32px;
+    color: white;
+}

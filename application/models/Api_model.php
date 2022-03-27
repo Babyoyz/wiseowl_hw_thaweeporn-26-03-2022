@@ -131,6 +131,20 @@ class Api_model extends CI_Model {
 
     }
 
+    public function update_hardwaretakeback($params){
+
+
+        $HwID = $params['HwID'];
+
+                $this->db->set('borrowerID', null);
+                $this->db->set('statushd', null);
+                $this->db->where('HwID', $HwID);
+                $this->db->update('hardwares'); 
+                
+            
+
+    }
+
     public function select_member_data(){
 
         $query = $this->db->get('employees');

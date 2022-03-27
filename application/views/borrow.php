@@ -1,6 +1,10 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <link rel="stylesheet" href="https://unpkg.com/vue-select@latest/dist/vue-select.css">
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
+
 
 <body>
     <main id="app" class="main center">
@@ -16,7 +20,7 @@
         <div class="row">
            <div class="col-md-6">
                 <div class="mb-3 row">
-                    <label for="inputPassword" class="col-sm-4 col-form-label">ผู้ยืม</label>
+                    <label for="inputPassword" class="col-sm-4 col-form-label">ผู้รับอุปกรณ์</label>
                     <div class="col-sm-8">
                     <v-select :options="options" v-model="result" label="FristName"></v-select>
                     </div>
@@ -72,16 +76,35 @@
                     <select class="form-select" aria-label="Default select example" v-model="statusselect">
                         <option selected>กรุณาเลือก</option>
                         <option value="1">ยืม</option>
-                        <option value="2">คืน</option>
                         <option value="3">ส่งซ่อม</option>
                         </select>
                     </div>
                 </div>
            </div>
         </div>
-        <button @click="submitdata">submit</button>
-    
+        <div class="d-flex justify-content-center mt-2">
+            <button @click="submitdata" class="btn btn-primary">บันทึกข้อมูล</button>
 
+        </div>
+    
+        <table id="example" class="table table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>รหัสทรัพย์สิน</th>
+                <th>ชื่ออุปกรณ์</th>
+                <th>ประเภทอุปกรณ์ที่ยืม</th>
+                <th>ยี่ห้ออุปกรณ์</th>
+                <th>สถานะ</th>
+                <th>ผู้รับอุปกรณ์</th>
+                <th>#</th>
+            </tr>
+        </thead>
+    </table>
+
+
+
+
+</div>
 <!-- Modal -->
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl">
@@ -153,7 +176,6 @@
     </div>
   </div>
 </div>
-</div>
 </main>
 
 </body>
@@ -162,9 +184,103 @@
 <script src="https://unpkg.com/vue-select@latest"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+
+
 <script>
+ 
+  $(document).ready(function() {
+    $('#example').DataTable( {
+        "ajax": "<?php echo base_url();?>ApiController/getequipment_datatable",
+        dom: 'Bfrtip',
+        buttons: [
+    {
+        extend: 'csv',
+        text: 'Export csv',
+        charset: 'utf-8',
+        extension: '.csv',
+        filename: 'export',
+        bom: true
+    }
+],
+        "columns": [
+            { "data": "HwID" },
+            { "data": "Namehardware" },
+            { "data": "TypeHardware" },
+            { "data": "brand" },
+            { 
+                "render":  ( data, type, row ) => {
+
+                    let resultstatushd = ''
+                    let classvchip=""
+                    if(row.statushd == 1){
+                        resultstatushd = 'ยืมอุปกรณ์'
+                        classvchip = 'v-chip-custom orange'
+                    }else if(row.statushd == 2){
+                        resultstatushd = 'คืนอุปกรณ์'
+                        classvchip = 'v-chip-custom green'
+                    }else if(row.statushd == 3){
+                        resultstatushd = 'ส่งซ่อม'
+                        classvchip = 'v-chip-custom red'
+                    }else{
+                        resultstatushd = 'ไม่มีคนยืม'
+                        classvchip = 'v-chip-custom btn-primary'
+                    }
+                    return `<p class="v-chip ${classvchip}">${resultstatushd}</p>`;
+
+                    
+                },
+                
+             },
+             { 
+                "render":  ( data, type, row ) => {
+
+                    let resultname = ''
+                    
+                    if(row.FristName == null){
+                        resultname ='ไม่มีผู้ยืม'
+                    }else{
+                        resultname = `${row.FristName} (${row.Position })`
+
+                    }
+                    return `<p>${resultname}</p>`;
+
+                    
+                },
+                
+             },
+             {
+                data: null,
+                render: function ( data, type, row ) {
+
+                    if(row.statushd ==  1 || row.statushd == 3){
+
+                        return `<button class="btn btn-warning" onclick="vm.updatedatahardware('${row.HwID}')">รับคืนอุปกรณ์</button>`;
+
+                    }else{
+
+                        return ``;
+
+                    }
+                }
+                }
+        ]
+    } );
+} );
+
+
 Vue.component('v-select', VueSelect.VueSelect);
-new Vue({
+var vm = new Vue({
     el: '#app',
    data(){
        return{
@@ -219,6 +335,22 @@ new Vue({
 
              this.equipment = data
          
+       },
+       async updatedatahardware(item){
+
+        const { data } = await axios.post("<?php echo base_url();?>/ApiController/callupdate_hardwaretakeback",{
+            HwID:item
+                                    })
+
+            if(data == 'OK'){
+
+                Swal.fire('ข้อความแจ้งเตือน','Updateข้อมูลสำเร็จ','success')
+
+                setTimeout(() => {
+                    window.location.reload()
+                }, 800);
+
+            }
        },
        async submitdata(){
 

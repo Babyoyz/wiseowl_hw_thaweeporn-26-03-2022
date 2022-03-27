@@ -226,6 +226,53 @@ class ApiController extends CI_Controller {
 
     }
 
+ 
+   public function getequipment_datatable(){
+
+        $this->load->model('Api_model');
+    
+        $this->load->database();
+
+        $result = $this->Api_model->select_equipment_report();
+
+        $this->db->close();
+
+        $arr = [
+            "data" => $result,
+        ];
+        echo json_encode( $arr );
+    }
+
+    public function callupdate_hardwaretakeback(){
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            $json = file_get_contents('php://input');
+
+            $product = json_decode($json);
+    
+            $data_update_statushd = [
+
+                "HwID" =>$product->HwID
+    
+            ];
+            $this->load->model('Api_model');
+
+            $this->load->database();
+
+            $this->Api_model->update_hardwaretakeback($data_update_statushd);
+
+            $this->db->close();
+
+            echo "OK";
+
+        }else{
+            echo "no methods get";
+        }
+        
+    }
+
+
     public function exports_data(){
 
         $this->load->helper('exportcsv');
