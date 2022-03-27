@@ -221,3 +221,18 @@ input:read-only {
     height: 32px;
     color: white;
 }
+
+.main-chart {
+    display: flex;
+    justify-content: center;
+}
+
+.div-cart {
+    width: 50%;
+    margin-top: 5rem;
+}
+
+.header-font {
+    margin-top: 2rem;
+    font-weight: bold;
+}

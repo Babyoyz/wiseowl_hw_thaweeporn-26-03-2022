@@ -272,6 +272,19 @@ class ApiController extends CI_Controller {
         
     }
 
+    public function call_getdatacart(){
+
+        $this->load->model('Api_model');
+    
+        $this->load->database();
+
+        $result = $this->Api_model->getdatacart();
+
+        $this->db->close();
+
+        
+        echo json_encode( $result );
+    }
 
     public function exports_data(){
 

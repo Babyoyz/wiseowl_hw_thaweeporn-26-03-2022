@@ -141,7 +141,53 @@ class Api_model extends CI_Model {
                 $this->db->where('HwID', $HwID);
                 $this->db->update('hardwares'); 
                 
-            
+    }
+
+    public function getdatacart(){
+
+        // $this->db->where('typeactivities =', 1); 
+        // $query = $this->db->get('hw_activities');
+        
+        // if($query->num_rows() != 0)
+        // {
+        //     return $query->num_rows();
+        // }
+        // else
+        // {
+        //     return 0;
+        // }
+
+        // $array[] = $var;
+
+        // array_push($stack,$query->num_rows());
+
+        // return $array;
+
+        $this->db->select('count(*) as countdata');
+        $this->db->from('hw_activities');
+        $this->db->where('typeactivities =', 1); 
+        $query1 = $this->db->get_compiled_select();
+        
+        $this->db->select('count(*) as countdata');
+        $this->db->from('hw_activities');
+        $this->db->where('typeactivities =', 2); 
+        $query2 = $this->db->get_compiled_select();
+        
+        $this->db->select('count(*) as countdata');
+        $this->db->from('hw_activities');
+        $this->db->where('typeactivities =', 3); 
+        $query3 = $this->db->get_compiled_select();
+
+        $query = $this->db->query($query1 .' UNION '. $query2 .' UNION '. $query3);
+
+        if($query->num_rows() != 0)
+        {
+            return $query->result_array();
+        }
+        else
+        {
+            return false;
+        }
 
     }
 

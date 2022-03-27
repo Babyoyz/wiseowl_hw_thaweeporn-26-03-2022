@@ -32,10 +32,13 @@
                     </template>
                 </v-data-table>
             </v-card>
+            <h2 class="header-font">รายงานภาพรวมการยืมอุปกรณ์</h2>
+            <div class="main-chart">
+            <div class="div-cart">
+                <canvas id="myChart"></canvas>
+            </div>
+            </div>
         </v-container>
-
-
-
     </main>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/vue-json-to-csv"></script>
@@ -43,6 +46,7 @@
 <script src="<?php echo base_url();?>assets/js/axios.min.js"></script>
 <script src="<?php echo base_url();?>node_modules/vue-json-to-csv/dist/vue-json-to-csv.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script type="text/javascript">
 Vue.use(VueJsonToCsv);
 </script>
@@ -99,7 +103,7 @@ new Vue({
             } = await axios.get("<?php echo base_url();?>/ApiController/", {})
 
             this.item = data    
-            console.log(data)
+       
    
         },
         getColor(typeactivities) {
@@ -113,4 +117,66 @@ new Vue({
 })
 </script>
 
+<script>
+
+const plugin = {
+  id: 'custom_canvas_background_color',
+  beforeDraw: (chart) => {
+    const ctx = chart.canvas.getContext('2d');
+    ctx.save();
+    ctx.globalCompositeOperation = 'destination-over';
+    ctx.fillStyle = 'lightGreen';
+    ctx.fillRect(0, 0, chart.width, chart.height);
+    ctx.restore();
+  }
+};
+
+    
+axios.get("<?php echo base_url();?>/ApiController/call_getdatacart",{})
+
+.then(( {data} ) => {
+
+    console.log(data)
+    let arraydata = []
+    for(let i of data){
+        arraydata.push(i.countdata)
+    }
+    const datacart = {
+     labels: [
+    'ยืมอุปกรณ์',
+    'คืนอุปกรณ์',
+    'ส่งซ่อม'
+  ],
+  datasets: [{
+    label: 'My First Dataset',
+    data: arraydata,
+    backgroundColor: [
+      'orange',
+      'green',
+      'red'
+    ],
+    hoverOffset: 4
+  }]
+};
+  const config = {
+  type: 'doughnut',
+  data: datacart,
+  plugins: [plugin],
+};
+const myChart = new Chart(
+    document.getElementById('myChart'),
+    config
+  );
+
+})
+
+.catch((err) => {
+    console.error(err)
+})
+ 
+</script>
+
+<script>
+ 
+</script>
 </html>

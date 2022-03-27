@@ -11,7 +11,7 @@
 
        <div class="container">
         <div class="header-content">
-            <p>บันทึกการยืม</p>
+            <h3 class="font-bold">บันทึกการยืม</h3>
         </div>
         <div class="d-flex justify-content-end mb-3">
             <a class="btn btn-primary" data-bs-toggle="modal" href="#staticBackdrop" role="button">เพิ่มอุปกรณ์</a>
