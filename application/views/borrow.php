@@ -100,16 +100,28 @@
             </div>
             <div class="col-md-6">
            <div class="mb-3 row">
-                    <label for="inputPassword" class="col-sm-4 col-form-label">สถานะการยืม</label>
-                    <div class="col-sm-8">
+                    <label for="inputPassword" class="col-sm-4 col-form-label">ประเภทอุปกรณ์ที่ยืม</label>
+                    <div class="col-sm-8 d-flex">
                     <select class="form-select" aria-label="Default select example" v-model="selecthardwaretype">
                         <option selected>กรุณาเลือก</option>
                         <option value="อุปกรณ์คอมพิวเตอร์">อุปกรณ์คอมพิวเตอร์</option>
                         <option value="2">อื่นๆ</option>
                         </select>
+                        <div class="mt-5" v-if="selecthardwaretype == 2">
+                        <input type="text"  class="form-control" placeholder="กรุณาระบุ">
+                        </div>
                     </div>
                 </div>
            </div>
+          
+           <div class="col-md-6">
+            <div class="mb-3 row">
+                        <label for="inputPassword" class="col-sm-4 col-form-label">brand</label>
+                        <div class="col-sm-8">
+                        <input type="text" class="form-control" v-model="nameheadware">
+                        </div>
+                    </div>
+            </div>
           </div>
   
       </div>

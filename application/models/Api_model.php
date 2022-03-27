@@ -41,10 +41,14 @@ class Api_model extends CI_Model {
 
     public function select_check_statushw($params){
 
-        $this->db->where('hardwareID', $params); 
-        $this->db->where('typeactivities =', '1'); 
-        $this->db->order_by('CreatedDate', 'DESC');
-        $query = $this->db->get('hw_activities',1);
+        // $this->db->where('hardwareID', $params); 
+        // $this->db->where('typeactivities =', '1'); 
+        // $this->db->order_by('CreatedDate', 'DESC');
+        // $query = $this->db->get('hw_activities',1);
+
+        $this->db->where('ID =', $params); 
+        $this->db->where('statushd =', '1'); 
+        $query = $this->db->get('hardwares');
 
         if($query->num_rows() != 0)
         {
