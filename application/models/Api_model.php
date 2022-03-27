@@ -41,11 +41,6 @@ class Api_model extends CI_Model {
 
     public function select_check_statushw($params){
 
-        // $this->db->where('hardwareID', $params); 
-        // $this->db->where('typeactivities =', '1'); 
-        // $this->db->order_by('CreatedDate', 'DESC');
-        // $query = $this->db->get('hw_activities',1);
-
         $this->db->where('ID =', $params); 
         $this->db->where('statushd =', '1'); 
         $query = $this->db->get('hardwares');
@@ -145,24 +140,7 @@ class Api_model extends CI_Model {
 
     public function getdatacart(){
 
-        // $this->db->where('typeactivities =', 1); 
-        // $query = $this->db->get('hw_activities');
-        
-        // if($query->num_rows() != 0)
-        // {
-        //     return $query->num_rows();
-        // }
-        // else
-        // {
-        //     return 0;
-        // }
-
-        // $array[] = $var;
-
-        // array_push($stack,$query->num_rows());
-
-        // return $array;
-
+  
         $this->db->select('count(*) as countdata');
         $this->db->from('hw_activities');
         $this->db->where('typeactivities =', 1); 
