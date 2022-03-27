@@ -176,7 +176,5 @@ const myChart = new Chart(
  
 </script>
 
-<script>
- 
-</script>
+
 </html>
