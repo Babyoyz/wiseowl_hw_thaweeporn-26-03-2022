@@ -191,3 +191,8 @@ input[type=checkbox]:checked~.sidebarIconToggle>.diagonal.part-2 {
 .text-center {
     text-align: center;
 }
+
+input:read-only {
+    background-color: white !important;
+    cursor: no-drop;
+}

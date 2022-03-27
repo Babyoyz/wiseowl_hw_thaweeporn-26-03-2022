@@ -38,42 +38,61 @@ class Api_model extends CI_Model {
 
     }
 
+
+    public function select_check_statushw($params){
+
+        $this->db->where('hardwareID', $params); 
+        $this->db->where('typeactivities =', '1'); 
+        $this->db->order_by('CreatedDate', 'DESC');
+        $query = $this->db->get('hw_activities',1);
+
+        if($query->num_rows() != 0)
+        {
+            return $query->num_rows();
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+
     public function insert_hw_activitie($params){
 
-        //     $name = $params['Name'];
+            $hardwareID = $params['hardwareID'];
+            $EmployeeID = $params['EmployeeID'];
+            $typeactivities = $params['typeactivities'];
 
- 
 
-        // "IDEMployee" => $product->IDEMployee,
-        //         "band" => $product->band,
-        //         "equipment" => $product->equipment,
-        //         "equipmenttype" => $product->equipmenttype,
-        //         "statusselect" => $product->statusselect,
-                
-            $Namehardware = $params['equipment'];
-            $Type = $params['equipmenttype'];
-            $brand = $params['band'];
+                           $data = array(
+                                'hardwareID' => $hardwareID,
+                                'EmployeeID' => $EmployeeID,
+                                'typeactivities' => $typeactivities,
+                        );
+                        
+                        return  $this->db->insert('hw_activities', $data);
+             
+    }
 
-                $data_inserthw = array(
-                'Namehardware' => $Namehardware,
-                'Type' => $Type,
-                'brand' => $brand,
-                'IDemployees' => 'admin'
+
+    public function updatestatusHW($params){
+
+        $borrowerID = $params['borrowerID'];
+        $statushd = $params['statushd'];
+        $HwID = $params['HwID'];
+
+                    $data = array(
+                        'borrowerID' => $borrowerID,
+                        'statushd'  => $statushd,
+                       
                 );
 
-              $Query_insert = $this->db->insert('hardwares', $data_inserthw);
+                $this->db->set('borrowerID', $borrowerID);
+                $this->db->set('statushd', $statushd);
+                $this->db->where('ID', $HwID);
+                $this->db->update('hardwares'); 
+                
 
-              
-            //   if($Query_insert == 1){
-
-            //                $data = array(
-            //                     'hardwareID' => '1',
-            //                     'EmployeeID' => $name,
-            //                     'typeactivities' => '3',
-            //             );
-                        
-            //             return  $this->db->insert('hw_activities', $data);
-            //   }
     }
 
     public function select_member_data(){

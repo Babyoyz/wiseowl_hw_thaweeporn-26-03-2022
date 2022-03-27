@@ -1,6 +1,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <link rel="stylesheet" href="https://unpkg.com/vue-select@latest/dist/vue-select.css">
 
+
 <body>
     <main id="app" class="main center">
 
@@ -43,6 +44,16 @@
                     </div>
                 </div>
            </div>
+
+           <div class="col-md-6">
+           <div class="mb-3 row">
+                    <label for="inputPassword" class="col-sm-4 col-form-label">รหัสทรัพย์สิน</label>
+                    <div class="col-sm-8">
+                    <input type="text" class="form-control" v-model="HwID" Readonly>
+                    </div>
+                </div>
+           </div>
+
            <div class="col-md-6">
            <div class="mb-3 row">
                     <label for="inputPassword" class="col-sm-4 col-form-label">ประเภทอุปกรณ์ที่ยืม</label>
@@ -66,11 +77,10 @@
            </div>
         </div>
         <button @click="submitdata">submit</button>
-        <!-- Button trigger modal -->
+    
         <a class="btn btn-primary" data-bs-toggle="modal" href="#exampleModalToggle" role="button">Open first modal</a>
 
 
-<!-- Modal -->
 <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1"  data-bs-backdrop="static" >
   <div class="modal-dialog  modal-xl">
     <div class="modal-content">
@@ -137,7 +147,8 @@ new Vue({
     equipmentshow:'',
     band:'',
     nameheadware:'',
-    selecthardwaretype:''
+    selecthardwaretype:'',
+    HwID:''
     }
    },
    created() {
@@ -151,6 +162,11 @@ new Vue({
        this.equipmenttype = this.equipmentshow  != null ? this.equipmentshow.Type :''
 
        this.band = this.equipmentshow  != null ? this.equipmentshow.brand :''
+       
+
+       this.HwID = this.equipmentshow  != null ?  this.equipmentshow.HwID :''
+
+    
 
    },
    methods:{
@@ -175,14 +191,19 @@ new Vue({
 
             let json = {
                 IDEMployee:this.result.ID,
-                equipment:this.equipment,
                 band:this.band,
-                equipmenttype:this.equipmenttype,
                 statusselect:this.statusselect,
+                HwID:this.equipmentshow.ID
 
             }
 
-            console.log(json)
+            const { data } = await axios.post("<?php echo base_url();?>/ApiController/call_insert_hw_activitie",{
+                ...json
+            })
+
+
+
+            console.log(data)
        }
    }
 
